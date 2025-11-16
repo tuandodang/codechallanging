@@ -1,0 +1,257 @@
+{
+  "test_cases": [
+    {
+      "id": "test_1_simple_linear",
+      "description": "Simple linear dependency chain",
+      "input": {
+        "tasks": ["deploy", "build", "test"],
+        "dependencies": [
+          ["deploy", "build"],
+          ["build", "test"]
+        ]
+      },
+      "expected_output": {
+        "type": "success",
+        "valid_orders": [
+          ["test", "build", "deploy"]
+        ]
+      }
+    },
+    {
+      "id": "test_2_multiple_independent",
+      "description": "Multiple independent chains",
+      "input": {
+        "tasks": ["task1", "task2", "task3", "task4"],
+        "dependencies": [
+          ["task2", "task1"],
+          ["task4", "task3"]
+        ]
+      },
+      "expected_output": {
+        "type": "success",
+        "valid_orders": [
+          ["task1", "task3", "task2", "task4"],
+          ["task3", "task1", "task4", "task2"],
+          ["task1", "task2", "task3", "task4"],
+          ["task3", "task4", "task1", "task2"]
+        ],
+        "note": "Any ordering where task1 comes before task2 AND task3 comes before task4 is valid"
+      }
+    },
+    {
+      "id": "test_3_circular_dependency",
+      "description": "Circular dependency - should fail",
+      "input": {
+        "tasks": ["A", "B", "C"],
+        "dependencies": [
+          ["A", "B"],
+          ["B", "C"],
+          ["C", "A"]
+        ]
+      },
+      "expected_output": {
+        "type": "error",
+        "error_type": "circular_dependency"
+      }
+    },
+    {
+      "id": "test_4_no_dependencies",
+      "description": "No dependencies - any order valid",
+      "input": {
+        "tasks": ["task1", "task2", "task3"],
+        "dependencies": []
+      },
+      "expected_output": {
+        "type": "success",
+        "note": "Any permutation of the tasks is valid"
+      }
+    },
+    {
+      "id": "test_5_empty_input",
+      "description": "Empty task list",
+      "input": {
+        "tasks": [],
+        "dependencies": []
+      },
+      "expected_output": {
+        "type": "success",
+        "valid_orders": [
+          []
+        ]
+      }
+    },
+    {
+      "id": "test_6_single_task",
+      "description": "Single task with no dependencies",
+      "input": {
+        "tasks": ["only_task"],
+        "dependencies": []
+      },
+      "expected_output": {
+        "type": "success",
+        "valid_orders": [
+          ["only_task"]
+        ]
+      }
+    },
+    {
+      "id": "test_7_diamond_dependency",
+      "description": "Diamond-shaped dependency graph",
+      "input": {
+        "tasks": ["A", "B", "C", "D"],
+        "dependencies": [
+          ["A", "B"],
+          ["A", "C"],
+          ["B", "D"],
+          ["C", "D"]
+        ]
+      },
+      "expected_output": {
+        "type": "success",
+        "valid_orders": [
+          ["D", "B", "C", "A"],
+          ["D", "C", "B", "A"]
+        ],
+        "note": "D must be first, A must be last. B and C can be in any order between them."
+      }
+    },
+    {
+      "id": "test_8_self_dependency",
+      "description": "Task depends on itself - circular",
+      "input": {
+        "tasks": ["A", "B"],
+        "dependencies": [
+          ["A", "A"]
+        ]
+      },
+      "expected_output": {
+        "type": "error",
+        "error_type": "circular_dependency"
+      }
+    },
+    {
+      "id": "test_9_complex_valid",
+      "description": "Complex valid dependency graph",
+      "input": {
+        "tasks": ["compile", "test", "package", "deploy", "notify", "cleanup"],
+        "dependencies": [
+          ["test", "compile"],
+          ["package", "compile"],
+          ["package", "test"],
+          ["deploy", "package"],
+          ["notify", "deploy"],
+          ["cleanup", "deploy"]
+        ]
+      },
+      "expected_output": {
+        "type": "success",
+        "note": "compile must be first, then test, package, deploy, then notify and cleanup can be in any order"
+      }
+    },
+    {
+      "id": "test_10_complex_circular",
+      "description": "Complex circular dependency",
+      "input": {
+        "tasks": ["A", "B", "C", "D", "E"],
+        "dependencies": [
+          ["B", "A"],
+          ["C", "B"],
+          ["D", "C"],
+          ["E", "D"],
+          ["A", "E"]
+        ]
+      },
+      "expected_output": {
+        "type": "error",
+        "error_type": "circular_dependency"
+      }
+    },
+    {
+      "id": "test_11_invalid_task_reference",
+      "description": "Dependency references non-existent task",
+      "input": {
+        "tasks": ["A", "B"],
+        "dependencies": [
+          ["A", "C"]
+        ]
+      },
+      "expected_output": {
+        "type": "error",
+        "error_type": "invalid_task_reference",
+        "note": "Task 'C' is referenced in dependencies but not in task list"
+      }
+    },
+    {
+      "id": "test_12_disconnected_components",
+      "description": "Multiple disconnected components",
+      "input": {
+        "tasks": ["A", "B", "C", "D", "E", "F"],
+        "dependencies": [
+          ["B", "A"],
+          ["C", "B"],
+          ["E", "D"],
+          ["F", "E"]
+        ]
+      },
+      "expected_output": {
+        "type": "success",
+        "note": "Two separate chains: A->B->C and D->E->F. Many valid orderings exist."
+      }
+    },
+    {
+      "id": "test_13_large_chain",
+      "description": "Long dependency chain",
+      "input": {
+        "tasks": ["step1", "step2", "step3", "step4", "step5", "step6", "step7", "step8", "step9", "step10"],
+        "dependencies": [
+          ["step2", "step1"],
+          ["step3", "step2"],
+          ["step4", "step3"],
+          ["step5", "step4"],
+          ["step6", "step5"],
+          ["step7", "step6"],
+          ["step8", "step7"],
+          ["step9", "step8"],
+          ["step10", "step9"]
+        ]
+      },
+      "expected_output": {
+        "type": "success",
+        "valid_orders": [
+          ["step1", "step2", "step3", "step4", "step5", "step6", "step7", "step8", "step9", "step10"]
+        ]
+      }
+    }
+  ],
+  "hidden_test_cases": [
+    {
+      "id": "hidden_1_performance",
+      "description": "Large input test (1000 tasks)",
+      "note": "This test validates performance with large inputs. Not included in detail to prevent optimization for specific cases."
+    },
+    {
+      "id": "hidden_2_edge_case",
+      "description": "Specific edge case with unusual dependency pattern",
+      "note": "Tests handling of a specific real-world scenario"
+    },
+    {
+      "id": "hidden_3_subtle_cycle",
+      "description": "Subtle circular dependency in large graph",
+      "note": "Tests cycle detection in complex graphs"
+    }
+  ],
+  "validation_rules": {
+    "how_to_validate_output": {
+      "for_success_case": [
+        "1. Verify output is not null/empty (unless input was empty)",
+        "2. Verify all tasks from input appear exactly once in output",
+        "3. For each dependency [A, B], verify that B appears before A in the output",
+        "4. If multiple valid orders exist, any one is acceptable"
+      ],
+      "for_error_case": [
+        "1. Verify output is null OR error is thrown/returned",
+        "2. If error messages are provided, they should be descriptive"
+      ]
+    }
+  }
+}

@@ -1,0 +1,13 @@
+# Python dependencies for Task Scheduler Challenge
+
+# Testing framework
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Optional: for better test output
+pytest-sugar>=0.9.7
+
+# Optional: for code quality checks
+# flake8>=6.0.0
+# black>=23.0.0
+# mypy>=1.4.0
