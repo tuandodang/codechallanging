@@ -1,14 +1,64 @@
-# Task Scheduler Coding Challenge - Complete Package
+# Coding Challenge Platform - Complete System
 
-> A comprehensive, ready-to-use coding challenge for assessing software engineering candidates' ability to work with graph algorithms, write clean code, and demonstrate problem-solving skills.
+> A comprehensive platform for managing coding challenges, events, and competitions with a full-featured backend API and ready-to-use challenge templates.
+
+## 📦 What's Included
+
+This repository contains:
+
+1. **Backend API** - Complete RESTful API with authentication, authorization, and management modules
+2. **Challenge Templates** - Ready-to-use coding challenge templates for candidates
+3. **Documentation** - Comprehensive API and usage documentation
 
 ## 📋 Quick Links
 
-- **[Main Challenge Document](CODING_CHALLENGE.md)** - Complete challenge requirements and problem statement
-- **[Submission Guidelines](SUBMISSION_GUIDELINES.md)** - How to submit your solution
+### Backend System
+- **[Backend README](BACKEND_README.md)** - Complete backend setup and usage guide
+- **[API Documentation](API_DOCUMENTATION.md)** - Detailed API endpoint documentation
+
+### Coding Challenge Templates
+- **[Challenge Document](CODING_CHALLENGE.md)** - Complete challenge requirements and problem statement
+- **[Submission Guidelines](SUBMISSION_GUIDELINES.md)** - How to submit solutions
 - **[Test Cases](test_cases.json)** - Sample test cases in JSON format
 
-## 🎯 Challenge Overview
+---
+
+## 🚀 Backend System
+
+A complete Node.js/TypeScript backend with Express.js for managing coding challenges, events, users, and submissions.
+
+### Features
+
+- ✅ **User Management** - Registration, authentication, profiles
+- ✅ **Authentication & Authorization** - JWT-based auth with RBAC
+- ✅ **Event Management** - Hackathons, contests, challenges
+- ✅ **Problem Management** - Create and manage coding problems
+- ✅ **Submission System** - Submit and evaluate solutions
+- ✅ **Role-Based Access** - Admin, Organizer, Judge, Participant roles
+
+### Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env
+
+# Start MongoDB
+sudo service mongod start
+
+# Run development server
+npm run dev
+```
+
+Server will start at `http://localhost:3000`
+
+See [BACKEND_README.md](BACKEND_README.md) for complete setup instructions.
+
+---
+
+## 🎯 Challenge Template Overview
 
 **Problem:** Implement a task scheduler that can determine a valid execution order for tasks with dependencies, or detect circular dependencies (topological sort problem).
 
